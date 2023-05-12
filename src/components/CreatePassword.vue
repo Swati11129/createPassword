@@ -19,15 +19,19 @@
       <div>
         <label>Create Password</label>
         <br />
-        <input type="password" v-model="password" @focus=" remove='' "  class="mb-2" />
+        <input type="password" v-model="password" @focus="removeWarning" @blur="showWarningMethod" class="mb-2" />
       </div>
       <div>
         <label>Confirm Password</label>
         <br />
-        <input type="password" v-model="confirmPassword" class="mb-3" />
+        <input type="password" v-model="confirmPassword" @focus="removeConfirmWarning" @blur="showConfirmWarningMethod" class="mb-3" />
       </div>
-      <div v-if="strongPassword"  class="red--text mb-3" >{{ strongPassword }}</div>
-      <v-btn  :disabled="true" class="" style="">Create</v-btn>
+      <div v-if="showWarning"  class="red--text mb-3" >{{ warningText }}</div>
+      <div v-else-if="showConfirm"  class="red--text mb-3" >{{ confirmWarningText }}</div>
+      
+      <div class="  text-right ">
+        <v-btn  :disabled="showConfirm || showWarning" class="" style=" ">Create</v-btn>
+      </div>
     </div>
   </v-container>
 </template>
@@ -38,44 +42,70 @@ export default {
     return {
       password: "",
       confirmPassword: "",
-      warn:"show"
+      warningText:"",
+      confirmWarningText:"",
+      showWarning:true,
+      showConfirm:false,
     };
   },
   methods:{
-    removeWarnig(){
-      this.remove="remove";
-    }
-  },
-  computed: {
-    strongPassword() {
-      if(this.warn==""){
-        return "";
+    removeWarning(){
+      this.showWarning=false;
+    },
+    removeConfirmWarning(){
+      this.showConfirm=false;
+    },
+    showWarningMethod(){
+      if(this.password.length==0){
+        this.showWarning=true;
+        this.warningText="Password required";
       }
-      if(this.password==""){
-        return "Password must be there";
+      else if (this.password.length < 8) {
+        this.showWarning=true;
+        this.warningText='New Password must be at least 8 characters';
       }
-      if (this.password.length < 8) {
-        return "New Password must be at least 8 characters";
+      else if (!(/[a-z]/.test(this.password))) {
+        this.showWarning=true;
+        this.warningText= "Password not strong. Add: ! @, 123, abc, ABC";
       }
-      if (!(/[a-z]/.test(this.password))) {
-        return "Password not strong. Add: ! @, 123, abc, ABC";
+      else if (!(/[A-Z]/.test(this.password))) {
+        this.showWarning=true;
+        this.warningText= "Password not strong. Add: ! @, 123, abc, ABC";
       }
-      if (!(/[A-Z]/.test(this.password))) {
-        return "Password not strong. Add: ! @, 123, abc, ABC";
+      else if (!(/[0-9]/.test(this.password))) {
+        this.showWarning=true;
+        this.warningText= "Password not strong. Add: ! @, 123, abc, ABC";
       }
-      if (!(/[0-9]/.test(this.password))) {
-        return "Password not strong. Add: ! @, 123, abc, ABC";
+      else if (!(/[@!]/.test(this.password))) {
+        this.showWarning=true;
+        this.warningText= "Password not strong. Add: ! @, 123, abc, ABC";
       }
-      if (!(/[@!]/.test(this.password))) {
-        return "Password not strong. Add: ! @, 123, abc, ABC";
-      }
-      if(this.confirmPassword==""){
-        return "Password must be there";
-      }
-      if(this.confirmPassword!="" && this.password!=this.confirmPassword){
-        return "Password not matching"
+      else{
+        this.showWarning=false;
       }
     },
+    showConfirmWarningMethod(){
+      if(this.showWarning==false)
+      {
+       if(this.confirmPassword==""){
+        this.showConfirm=true;
+        this.confirmWarningText= "Password must be there";
+      }
+      else if( this.password!=this.confirmPassword){
+        this.showConfirm=true;
+        this.confirmWarningText= "Password not matching"
+      }
+      else{
+        this.showConfirm=false;
+      }
+    }
+    else{
+      this.showConfirm=false;
+    }
+      
+    }
+
   },
+
 };
 </script>
