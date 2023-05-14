@@ -34,6 +34,7 @@
             v-model="password"
             @focus="removeWarning"
             @blur="showWarningMethod"
+            @change="showWarningMethod"
             style="height: 50px"
           />
         </div>
@@ -55,13 +56,13 @@
             style="height: 50px"
           />
         </div>
-        <div v-if="showWarning" class="red--text">{{ warningText }}</div>
-        <div v-else-if="showConfirm" class="red--text">
+        <div v-if="showWarning" class="red--text">{{ createWarningText }}</div>
+        <div v-else-if="showConfirmWarning" class="red--text">
           {{ confirmWarningText }}
         </div>
 
         <div class="text-right">
-          <v-btn :disabled="showConfirm || showWarning">Create</v-btn>
+          <v-btn  :disabled="showConfirmWarning || showWarning " >Create</v-btn>
         </div>
       </div>
     </v-container>
@@ -75,59 +76,61 @@ export default {
       show1: false,
       password: "",
       confirmPassword: "",
-      warningText: "",
+      createWarningText: "",
       confirmWarningText: "",
-      showWarning: false,
-      showConfirm: false,
+      showCreateWarning: false,
+      showConfirmWarning: false,
       passwordRequired: false,
     };
   },
   methods: {
+   
+    
     removeWarning() {
-      this.showWarning = false;
+      this.showCreateWarning = false;
       this.passwordRequired = false;
     },
     removeConfirmWarning() {
-      this.showConfirm = false;
+      this.showConfirmWarning = false;
     },
     showWarningMethod() {
       if (this.password.length === 0) {
         this.passwordRequired = true;
-        // this.showWarning=true;
-        this.warningText = "";
+        // this.showCreateWarning=true;
+        this.createWarningText = "";
       } else if (this.password.length < 8) {
-        this.showWarning = true;
-        this.warningText = "New Password must be at least 8 characters";
+        this.showCreateWarning = true;
+        this.createWarningText = "New Password must be at least 8 characters";
       } else if (!/[a-z]/.test(this.password)) {
-        this.showWarning = true;
-        this.warningText = "Password not strong. Add: ! @, 123, abc, ABC";
+        this.showCreateWarning = true;
+        this.createWarningText = "Password not strong. Add: ! @, 123, abc, ABC";
       } else if (!/[A-Z]/.test(this.password)) {
-        this.showWarning = true;
-        this.warningText = "Password not strong. Add: ! @, 123, abc, ABC";
+        this.showCreateWarning = true;
+        this.createWarningText = "Password not strong. Add: ! @, 123, abc, ABC";
       } else if (!/[0-9]/.test(this.password)) {
-        this.showWarning = true;
-        this.warningText = "Password not strong. Add: ! @, 123, abc, ABC";
+        this.showCreateWarning = true;
+        this.createWarningText = "Password not strong. Add: ! @, 123, abc, ABC";
       } else if (!/[@!]/.test(this.password)) {
-        this.showWarning = true;
-        this.warningText = "Password not strong. Add: ! @, 123, abc, ABC";
+        this.showCreateWarning = true;
+        this.createWarningText = "Password not strong. Add: ! @, 123, abc, ABC";
       } else {
-        this.showWarning = false;
+        this.showCreateWarning = false;
       }
     },
     showConfirmWarningMethod() {
-      if (this.showWarning == false) {
+      // if (this.showCreateWarning == false) {
         if (this.confirmPassword == "") {
-          this.showConfirm = true;
+          this.showConfirmWarning = true;
           this.confirmWarningText = "Password must be there";
         } else if (this.password != this.confirmPassword) {
-          this.showConfirm = true;
+          this.showConfirmWarning = true;
           this.confirmWarningText = "Password not matching";
         } else {
-          this.showConfirm = false;
+          this.showConfirmWarning = false;
         }
-      } else {
-        this.showConfirm = false;
-      }
+      // } else {
+      //   this.showConfirm = false;
+      // }
     },
   },
 };
