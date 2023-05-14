@@ -34,7 +34,7 @@
             v-model="password"
             @focus="removeWarning"
             @blur="showWarningMethod"
-            @change="showWarningMethod"
+            color="red"
             style="height: 50px"
           />
         </div>
@@ -46,23 +46,24 @@
           <br />
           <v-text-field
             dense="false"
-            :type="show1 ? 'text' : 'password'"
-            @click:append="show1 = !show1"
-            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="show2 ? 'text' : 'password'"
+            @click:append="show2 = !show2"
+            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
             outlined
             v-model="confirmPassword"
             @focus="removeConfirmWarning"
             @blur="showConfirmWarningMethod"
+            color="red"
             style="height: 50px"
           />
         </div>
-        <div v-if="showWarning" class="red--text">{{ createWarningText }}</div>
+        <div v-if="showCreateWarning" class="red--text">{{ createWarningText }}</div>
         <div v-else-if="showConfirmWarning" class="red--text">
           {{ confirmWarningText }}
         </div>
 
         <div class="text-right">
-          <v-btn  :disabled="showConfirmWarning || showWarning " >Create</v-btn>
+          <v-btn  :disabled="showConfirmWarning || showCreateWarning || password!==confirmPassword || passwordRequired" >Create</v-btn>
         </div>
       </div>
     </v-container>
@@ -74,6 +75,7 @@ export default {
   data() {
     return {
       show1: false,
+      show2: false,
       password: "",
       confirmPassword: "",
       createWarningText: "",
@@ -118,7 +120,7 @@ export default {
       }
     },
     showConfirmWarningMethod() {
-      // if (this.showCreateWarning == false) {
+      if (this.showCreateWarning == false) {
         if (this.confirmPassword == "") {
           this.showConfirmWarning = true;
           this.confirmWarningText = "Password must be there";
@@ -128,9 +130,10 @@ export default {
         } else {
           this.showConfirmWarning = false;
         }
-      // } else {
-      //   this.showConfirm = false;
-      // }
+      } 
+      else {
+        this.showConfirmWarning = false;
+      }
     },
   },
 };
