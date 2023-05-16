@@ -30,7 +30,7 @@
             outlined
             v-model="password"
             @focus="removeWarning"
-            @blur="showWarningMethod"
+            @blur="showCreateWarningMethod"
             color="red"
             style="height: 50px"
           />
@@ -86,7 +86,7 @@ export default {
     removeConfirmWarning() {
       this.showConfirmWarning = false;
     },
-    showWarningMethod() {
+    showCreateWarningMethod() {
       if (this.password.length === 0) {
         this.showCreateWarning=true;
         this.createWarningText = "Password Required";
