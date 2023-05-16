@@ -1,17 +1,14 @@
 <template>
-  <div class="d-flex" style="height: 100vh">
-    <div>
-      <img
-        src="../assets/cloudnuro logo.png"
-        style="position: absolute; top: 20px; left: 20px; width: 80px"
-      />
-    </div>
+  <div class="d-flex" style="height: 100vh;">
+    
+    <img
+      src="../assets/cloudnuro logo.png"
+      style="position: absolute; top: 20px; left: 20px; width: 80px"
+    />
 
-    <v-container class="" style="margin: auto; width: 540px">
-      <div class="text-left">
+    <v-container style="margin: auto; width: 540px" class=" text-left">
         <div class="font-weight-bold text-h5">Hello Roger George</div>
         <div class="mb-6">Create new password</div>
-
         <div class="mb-6 font-weight-bold d-flex" style="gap: 10px">
           <div>
             <v-icon> mdi-email </v-icon>
@@ -38,9 +35,7 @@
             style="height: 50px"
           />
         </div>
-        <div v-if="passwordRequired" class="red--text" style="height: 30px">
-          Password required
-        </div>
+        <div v-if="showCreateWarning" class="red--text">{{ createWarningText }}</div>
         <div>
           <label>Confirm Password</label>
           <br />
@@ -57,15 +52,13 @@
             style="height: 50px"
           />
         </div>
-        <div v-if="showCreateWarning" class="red--text">{{ createWarningText }}</div>
-        <div v-else-if="showConfirmWarning" class="red--text">
+        <div v-if="showConfirmWarning" class="red--text">
           {{ confirmWarningText }}
         </div>
 
         <div class="text-right">
-          <v-btn  :disabled="showConfirmWarning || showCreateWarning || password!==confirmPassword || passwordRequired" >Create</v-btn>
+          <v-btn :disabled="showConfirmWarning || showCreateWarning || password!==confirmPassword " >Create</v-btn>
         </div>
-      </div>
     </v-container>
   </div>
 </template>
@@ -82,7 +75,6 @@ export default {
       confirmWarningText: "",
       showCreateWarning: false,
       showConfirmWarning: false,
-      passwordRequired: false,
     };
   },
   methods: {
@@ -97,9 +89,8 @@ export default {
     },
     showWarningMethod() {
       if (this.password.length === 0) {
-        this.passwordRequired = true;
-        // this.showCreateWarning=true;
-        this.createWarningText = "";
+        this.showCreateWarning=true;
+        this.createWarningText = "Password Required";
       } else if (this.password.length < 8) {
         this.showCreateWarning = true;
         this.createWarningText = "New Password must be at least 8 characters";
