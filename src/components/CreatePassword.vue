@@ -82,7 +82,6 @@ export default {
     
     removeWarning() {
       this.showCreateWarning = false;
-      this.passwordRequired = false;
     },
     removeConfirmWarning() {
       this.showConfirmWarning = false;
