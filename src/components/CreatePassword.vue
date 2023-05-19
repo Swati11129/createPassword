@@ -64,13 +64,13 @@ export default {
       password: "",
       confirmPassword: "",
       rules: {
-        createPasswordRequired: (v) =>v.length != 0 || "Password Required",
-        minLength: (v) =>v.length >= 8 || "New Password must be at least 8 characters",
-        strongPassword: (v) =>
-         ( /[a-z]+/.test(v) && /[A-Z]+/.test(v) && /[0-9]+/.test(v) && /[@!]+/.test(v) )||
+        createPasswordRequired: (v) =>v.length!= 0 || "Password Required",
+        minLength: (v)=>v.length >= 8 || "New Password must be at least 8 characters",
+        strongPassword: (v)=>
+         ( /(?=.*[a-z])(?=.*[0-9])(?=.*[A-Z])(?=.*[@!])/.test(v) )||
           "Password not strong. Add: ! @, 123, abc, ABC",
-        confirmPasswordRequired: (v) =>v.length != 0 || "Password must be there",
-        matchPassword: (v) => v=== this.password || "Password not matching"
+        confirmPasswordRequired: (v)=>v.length!= 0 || "Password must be there",
+        matchPassword: (v)=> v=== this.password || "Password not matching"
       },
     };
   },
