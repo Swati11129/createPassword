@@ -28,10 +28,9 @@
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             outlined
             v-model="password"
-            :rules="[rules.createPasswordRequired, rules.strongPassword]"
+            :rules="[rules.createPasswordRequired,rules.minLength, rules.strongPassword,]"
             color="red"
             @blur="validate"
-            @focus="validate"
           />
       </div>
       <div>
